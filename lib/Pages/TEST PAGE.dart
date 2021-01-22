@@ -1,25 +1,79 @@
-/*bottomNavigationBar: new Theme(
-data: Theme.of(context).copyWith(
-// sets the background color of the `BottomNavigationBar`
-canvasColor: Colors.green,
-// sets the active color of the `BottomNavigationBar` if `Brightness` is light
-primaryColor: Colors.red,
-textTheme: Theme
-    .of(context)
-.textTheme
-    .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
-child: new BottomNavigationBar(
-type: BottomNavigationBarType.fixed,
-currentIndex: 0,
-items: [
-new BottomNavigationBarItem(
-icon: new Icon(Icons.add),
-title: new Text("Add"),
-),
-new BottomNavigationBarItem(
-icon: new Icon(Icons.delete),
-title: new Text("Delete"),
-)
-],
-),
-),*/
+/// Flutter code sample for AppBar
+
+// This sample shows an [AppBar] with two simple actions. The first action
+// opens a [SnackBar], while the second action navigates to a new page.
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+/// This is the main application widget.
+class MyApp extends StatelessWidget {
+  static const String _title = 'Flutter Code Sample';
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: _title,
+      home: MyStatelessWidget(),
+    );
+  }
+}
+
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
+
+void openPage(BuildContext context) {
+  Navigator.push(context, MaterialPageRoute(
+    builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Next page'),
+        ),
+        body: const Center(
+          child: Text(
+            'This is the next page',
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
+      );
+    },
+  ));
+}
+
+/// This is the stateless widget that the main application instantiates.
+class MyStatelessWidget extends StatelessWidget {
+  MyStatelessWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: const Text('AppBar Demo'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add_alert),
+            tooltip: 'Show Snackbar',
+            onPressed: () {
+              scaffoldKey.currentState.showSnackBar(snackBar);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.navigate_next),
+            tooltip: 'Next page',
+            onPressed: () {
+              openPage(context);
+            },
+          ),
+        ],
+      ),
+      body: const Center(
+        child: Text(
+          'This is the home page',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}

@@ -21,17 +21,17 @@ import 'package:sherpa_app/Pages/ProfilePage.dart';
 import 'package:sherpa_app/Pages/ProgressPage.dart';
 import 'package:sherpa_app/Pages/ChallengesPage.dart';
 import 'package:sherpa_app/Pages/TEST%20PAGE.dart';
+import 'package:sherpa_app/Widgets/BottomNavigationBar';
 
 
-
-void main()
+void main() async
 {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
   /*FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
     if (kReleaseMode)
       exit(1);*/
-
-  runApp(MyApp());
 }
 
 /// This is the main application widget.
@@ -41,6 +41,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context)
   {
+    MyBottomNavigationBar();
+   // MyStatelessWidget();
       /*SystemChrome.setSystemUIOverlayStyle
       (
           SystemUiOverlayStyle
@@ -49,94 +51,81 @@ class MyApp extends StatelessWidget {
           statusBarColor: Colors.amber, //Status bar color
           )
       );*/
-      FlutterStatusbarcolor.setStatusBarColor(Colors.blue); //this change the status bar color to white
-      FlutterStatusbarcolor.setNavigationBarColor(Colors.green); //this sets the navigation bar color to green
+      //FlutterStatusbarcolor.setStatusBarColor(Colors.blue); //this change the status bar color to white
+      //FlutterStatusbarcolor.setNavigationBarColor(Colors.green); //this sets the navigation bar color to green
     return new MaterialApp(
       title: _title,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+
       ),
+        home:MyStatelessWidget()
 
-      home: MyBottomNavigationBar()
-    );
+       // MyBottomNavigationBar(),
+       // MyStatelessWidget(),
+        );
   }
 }
+//BOTTOM NAVIGATION BAR START
 
 
+//APPBAR START
 
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+final SnackBar snackBar = const SnackBar(content: Text('Showing Snackbar'));
 
-
-class MyBottomNavigationBar extends StatefulWidget
-{
-  @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
+void openPage(BuildContext context) {
+  Navigator.push(context, MaterialPageRoute(
+    builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Next page'),
+        ),
+        body: const Center(
+          child: Text(
+            'This is the next page',
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
+      );
+    },
+  ));
 }
 
-
-
-class _MyBottomNavigationBarState extends State<MyBottomNavigationBar>
-{
-  int _currentIndex = 0;
-  final List <Widget> _children =
-  [
-    HomePage(),
-    ExplorePage(),
-    ChallengesPage(),
-    ProgressPage(),
-    ProfilePage(),
-  ];
-
-  void onTappedBar(int index)
-  {
-    setState((){
-      _currentIndex=index;
-    });
-  }
+/// This is the stateless widget that the main application instantiates.
+class MyStatelessWidget extends StatelessWidget {
+  MyStatelessWidget({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context)
-  {
-    return new Scaffold
-      (
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar
-      (
-
-        onTap: onTappedBar,
-        currentIndex: _currentIndex,
-
-        items:
-        [
-          BottomNavigationBarItem
-          (
-              icon: new Icon(Icons.home),
-              label: 'Feed'
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: const Text('AppBar Demo'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add_alert),
+            tooltip: 'Show Snackbar',
+            onPressed: () {
+              scaffoldKey.currentState.showSnackBar(snackBar);
+            },
           ),
-          BottomNavigationBarItem
-          (
-              icon: new Icon(Icons.settings),
-              label: 'Explore'
-          ),
-          BottomNavigationBarItem
-            (
-              icon: new Icon(Icons.contacts),
-              label: 'Progress'
-          ),
-          BottomNavigationBarItem
-            (
-              icon: new Icon(Icons.contacts,
-              color: Colors.blue.shade400),
-              label: 'Challenges'
-          ),
-          BottomNavigationBarItem
-            (
-              icon: new Icon(Icons.contacts),
-              label: 'Profile'
+          IconButton(
+            icon: const Icon(Icons.navigate_next),
+            tooltip: 'Next page',
+            onPressed: () {
+              openPage(context);
+            },
           ),
         ],
       ),
+      body: const Center(
+        child: Text(
+          'This is the home page',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
     );
   }
 }
-
-
+//APPBAR END
