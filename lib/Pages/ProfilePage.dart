@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
 
 class ProfilePage extends StatefulWidget {
+  final bool hideStatus;
+  const ProfilePage({this.hideStatus});
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }

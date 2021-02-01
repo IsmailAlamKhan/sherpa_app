@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1073982648288",
+    "project_id": "sherpa-addab",
+    "storage_bucket": "sherpa-addab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073982648288:android:b7fb1c3264bcebf56f0585",
+        "android_client_info": {
+          "package_name": "com.test.sherpa_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073982648288-4vjk6urb73a1crk6c712hbspsvrl8qfe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVuq-0-uvhubD-BjJwcf_js43Eriwra3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073982648288-4vjk6urb73a1crk6c712hbspsvrl8qfe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
