@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:sherpa_app/Pages/HomePage.dart';
-import 'package:sherpa_app/Pages/MenuPage.dart';
 import 'package:sherpa_app/Pages/ProfilePage.dart';
-import 'package:sherpa_app/Pages/ProgressPage.dart';
-import 'package:sherpa_app/Pages/ExplorePage.dart';
-import 'package:sherpa_app/Pages/ChallengesPage.dart';
-import 'package:sherpa_app/Pages/screens.dart';
-import 'package:sherpa_app/main.dart';
+import 'custom-widget-tabs.widget.dart';
 
-
-class CustomWidgetExample extends StatefulWidget {
+BuildContext testContext;
+class ProvidedStylesExample extends StatefulWidget {
   final BuildContext menuScreenContext;
-  CustomWidgetExample({Key key, this.menuScreenContext}) : super(key: key);
+  ProvidedStylesExample({Key key, this.menuScreenContext}) : super(key: key);
 
   @override
-  _CustomWidgetExampleState createState() => _CustomWidgetExampleState();
+  _ProvidedStylesExampleState createState() => _ProvidedStylesExampleState();
 }
-
-class _CustomWidgetExampleState extends State<CustomWidgetExample> {
+class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
   PersistentTabController _controller;
   bool _hideNavBar;
 
@@ -31,17 +24,12 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
 
   List<Widget> _buildScreens() {
     return [
+      ProfilePage(),
+      ProfilePage(),
+      ProfilePage(),
 
-      HomePage(
-        hideStatus:_hideNavBar,
-      ),
-      ExplorePage(),
-      ProgressPage(),
-      ChallengesPage(),
-      ProfilePage(
-        hideStatus:_hideNavBar,
-      ),
-
+      ProfilePage(),
+      ProfilePage(),
     ];
   }
 
@@ -49,10 +37,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: "Home",
+        title: "Test",
         activeColor: Colors.blue,
         inactiveColor: Colors.grey,
-
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.search),
@@ -63,13 +50,14 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.add),
         title: ("Add"),
-        activeColor: Colors.deepOrange,
+        activeColor: Colors.blueAccent,
         inactiveColor: Colors.grey,
+        activeColorAlternate: Colors.white,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
-        title: ("Settings"),
-        activeColor: Colors.indigo,
+        icon: Icon(Icons.message),
+        title: ("Messages"),
+        activeColor: Colors.deepOrange,
         inactiveColor: Colors.grey,
       ),
       PersistentBottomNavBarItem(
@@ -84,91 +72,64 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
-      drawer: Drawer(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-
-              TextButton(child:Text('hey'), onPressed: () {
-                pushNewScreenWithRouteSettings(
-                context,
-                settings: RouteSettings(name:'/home'),
-                screen: MenuPage());
-              }
-
-      ),
-
-
-             // const Text('This is the Drawer');
-            ],
-          ),
-        ),
-      ),
-      appBar: AppBar
-        (
-          actions:[
-
-
-            /*IconButton(iconSize: 150,icon: Image.asset("assets/SHERPA.png", color: Colors.black,height: 1000,width: 1000,), onPressed: ()
-            {
-              //Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-            pushNewScreen(
-              context,
-              screen: MainScreen2(),
-            );
-            }),*/
-
-            ButtonTheme(
-              //minWidth: 10.0,
-              //height: 100.0,
-              child: TextButton(
-
-                onPressed: () {
-                  pushNewScreenWithRouteSettings(
-                    context,
-                    settings: RouteSettings(name:'/home'),
-                      screen: ProfilePage(hideStatus:_hideNavBar,),
-                  );
-                  /*pushNewScreen(
-                    context,
-                    screen: ProfilePage(),*/
-
-                },
-                child: Text("test"),
-              ),
-            ),
-          ]
-      ),
-
-      body: PersistentTabView.custom(
+      body: PersistentTabView(
         context,
         controller: _controller,
         screens: _buildScreens(),
+        items: _navBarsItems(),
         confineInSafeArea: true,
-        itemCount: 5,
+        backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         stateManagement: true,
+        navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
+            ? 0.0
+            : kBottomNavigationBarHeight,
+        hideNavigationBarWhenKeyboardShows: true,
+        margin: EdgeInsets.all(10.0),
+        popActionScreens: PopActionScreensType.once,
+        bottomScreenMargin: 0.0,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+        ),
+        onWillPop: () async {
+          await showDialog(
+            context: context,
+            useSafeArea: true,
+            builder: (context) => Container(
+              height: 50.0,
+              width: 50.0,
+              color: Colors.white,
+              child: RaisedButton(
+                child: Text("Close"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          );
+          return false;
+        },
+        selectedTabScreenContext: (context) {
+          testContext = context;
+        },
         hideNavigationBar: _hideNavBar,
+        decoration: NavBarDecoration(
+            colorBehindNavBar: Colors.indigo,
+            borderRadius: BorderRadius.circular(20.0)),
+        popAllScreensOnTapOfSelectedTab: true,
+        itemAnimationProperties: ItemAnimationProperties(
+          duration: Duration(milliseconds: 400),
+          curve: Curves.ease,
+        ),
         screenTransitionAnimation: ScreenTransitionAnimation(
           animateTabTransition: true,
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
-        customWidget: CustomNavBarWidget(
-          items: _navBarsItems(),
-          onItemSelected: (index) {
-            setState(() {
-              _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
-            });
-          },
-          selectedIndex: _controller.index,
-        ),
+        navBarStyle:
+        NavBarStyle.style15, // Choose the nav bar style with this property
       ),
     );
   }
-
 }

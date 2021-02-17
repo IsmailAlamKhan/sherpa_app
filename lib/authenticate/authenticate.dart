@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sherpa_app/authenticate/register.dart';
 import 'package:sherpa_app/authenticate/sign_in.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 class Authenticate extends StatefulWidget {
   @override
@@ -8,11 +9,26 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
+
+  bool showSignIn = true;
+  void toggleView()
+  {
+    setState(() {
+      showSignIn = !showSignIn;
+    });
+  }
+
   @override
-  Widget build(BuildContext context) {
-    Firebase.initializeApp();
-    return Container(
-      child: SignIn(),
-    );
+  Widget build(BuildContext context)
+  {
+    if(showSignIn)
+    {
+      return SignIn(toggleView: toggleView);
+    }
+      else
+      {
+        return Register(toggleView: toggleView);
+      }
   }
 }
+

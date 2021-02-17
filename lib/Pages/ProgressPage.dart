@@ -1,55 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:sherpa_app/Pages/HabitPage.dart';
 import 'package:sherpa_app/Pages/ProfilePage.dart';
+import 'package:sherpa_app/Pages/ProgressPages/settings_form.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:sherpa_app/main.dart';
 
 class ProgressPage extends StatefulWidget {
   @override
+
   _ProgressPageState createState() => _ProgressPageState();
 }
 
 class _ProgressPageState extends State<ProgressPage> {
+
   @override
+  void initState(){
+    super.initState();
+
+  }
   Widget build(BuildContext context) {
+    //ADD HABBIT SETTINGS
+    void _showSettingsPanel() {
+      showModalBottomSheet(context: context, builder: (context){
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          child: SettingsForm(),
+        );
+      });
+    }
+
+
     return Scaffold(
-      drawer: Drawer(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('This is the Drawer'),
-              ListTile(
-                title: Text("Home"),
-              )
-            ],
-          ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text('Progress', style: (TextStyle(color: Colors.black)),),
+          actions: [
+            FlatButton(
+              child: Text('Add habit'),
+              onPressed: () => _showSettingsPanel(),
+            )
+          ],
         ),
-      ),
-      appBar: AppBar(
-
-        actions: [
-          IconButton(iconSize: 150,icon: Image.asset("assets/SHERPA.png", color: Colors.black,height: 1000,width: 1000,), onPressed: ()
-          {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-          }),
-          ButtonTheme(
-            minWidth: 90.0,
-            height: 100.0,
-            child: TextButton(
-              onPressed: () {},
-              child: Text(""),
-            ),
-          ),
 
 
-        ],
-      ),
       body:Column(
         children: [
-          const Text("Test"),
           ElevatedButton(
               child: Text("Running"),
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HabitPage(info: 'Running'))); // Passing the info as argument
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HabitPage(info: 'Gratitude Journal'))); // Passing the info as argument
               },
           ),
           ElevatedButton(
@@ -61,6 +60,29 @@ class _ProgressPageState extends State<ProgressPage> {
 
         ],
       )
+    );
+  }
+}
+class ResearchScreen extends StatelessWidget {
+  const ResearchScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.deepOrangeAccent,
+      body: Container(
+        child: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "habit",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
