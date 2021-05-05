@@ -7,13 +7,13 @@ import 'package:sherpa_app/services/auth.dart';
 import 'package:sherpa_app/models/user.dart';
 import 'package:sherpa_app/widget/wrapper.dart';
 
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   runApp(MyApp());
 }
+
 BuildContext? testContext;
 
 class MyApp extends StatelessWidget {
@@ -22,24 +22,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          StreamProvider<UserData?>.value(
-            initialData: null,
-            value: AuthService().user,
-          ),
-          ChangeNotifierProvider(
-            create: (context) => TodosProvider(),
-          ),
-         ChangeNotifierProvider(
+      providers: [
+        StreamProvider<UserData?>.value(
+          initialData: null,
+          value: AuthService().user,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TodosProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => AuthService(),
-         )
-
-        ],
+        )
+      ],
       child: MaterialApp(
         home: Wrapper(),
       ),
     );
-
   }
 }
 
