@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sherpa_app/Pages/HabitPage.dart';
-import 'package:sherpa_app/Pages/ProfilePage.dart';
-import 'package:sherpa_app/Pages/ProgressPages/settings_form.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:sherpa_app/main.dart';
 
 class ProgressPage extends StatefulWidget {
   @override
@@ -24,7 +20,8 @@ class _ProgressPageState extends State<ProgressPage> {
       showModalBottomSheet(context: context, builder: (context){
         return Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-          child: SettingsForm(),
+          child: Spacer(),
+          //child: SettingsForm(),
         );
       });
     }
@@ -35,7 +32,7 @@ class _ProgressPageState extends State<ProgressPage> {
           backgroundColor: Colors.white,
           title: Text('Progress', style: (TextStyle(color: Colors.black)),),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text('Add habit'),
               onPressed: () => _showSettingsPanel(),
             )
@@ -64,7 +61,7 @@ class _ProgressPageState extends State<ProgressPage> {
   }
 }
 class ResearchScreen extends StatelessWidget {
-  const ResearchScreen({Key key}) : super(key: key);
+  const ResearchScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

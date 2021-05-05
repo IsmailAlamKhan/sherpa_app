@@ -1,67 +1,54 @@
-import 'package:flutter/material.dart';
-import 'package:sherpa_app/Widgets/wrapper.dart';
-import 'package:sherpa_app/models/user.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:sherpa_app/providers/habit_provider.dart';
-import 'package:sherpa_app/providers/entry_provider.dart';
-import 'package:sherpa_app/providers/test_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sherpa_app/provider/todos.dart';
+
 import 'package:sherpa_app/services/auth.dart';
+import 'package:sherpa_app/models/user.dart';
+import 'package:sherpa_app/widget/wrapper.dart';
 
 
-void main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(MyApp());
 }
-
-BuildContext testContext;
-
-
+BuildContext? testContext;
 
 class MyApp extends StatelessWidget {
+  static final String title = 'Todo App With Firebase';
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        StreamProvider<NUser>.value(
-          value: AuthService().user,
-        ),
-        ChangeNotifierProvider<ConstantHabitProvider>(
-          create: (context) => ConstantHabitProvider(),
-        ),
-        InheritedProvider(
-          create: (context) => TestProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => EntryProvider(),
-        )
+        providers: [
+          StreamProvider<UserData?>.value(
+            initialData: null,
+            value: AuthService().user,
+          ),
+          ChangeNotifierProvider(
+            create: (context) => TodosProvider(),
+          ),
+         ChangeNotifierProvider(
+          create: (context) => AuthService(),
+         )
 
-      ],
+        ],
       child: MaterialApp(
-        home:Wrapper(),
+        home: Wrapper(),
       ),
-          );
+    );
 
   }
 }
 
-
-
-/*class MyApp extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamProvider<NUser>.value(
-      value: AuthService().user,
-      child: MaterialApp(
-        title: 'Persistent Bottom Navigation Bar example project',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home:Wrapper(),
-      ),
-    );
-  }
-}*/
-
+/*child: MaterialApp(
+debugShowCheckedModeBanner: false,
+title: title,
+theme: ThemeData(
+primarySwatch: Colors.pink,
+scaffoldBackgroundColor: Color(0xFFf6f5ee),
+),
+home: Wrapper(),
+),*/

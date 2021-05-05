@@ -1,44 +1,31 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sherpa_app/Pages/Home.dart';
-import 'package:sherpa_app/Pages/ProfilePage.dart';
-import 'package:sherpa_app/Pages/ProgressPages/settings_form.dart';
-import 'package:sherpa_app/services/auth.dart';
-import 'package:sherpa_app/services/database.dart';
-import 'package:provider/provider.dart';
-import 'package:sherpa_app/Pages/ProgressPages/habit_list.dart';
-import 'package:sherpa_app/models/habit.dart';
-import 'package:sherpa_app/models/user.dart';
-
-
 
 class HomePage extends StatefulWidget {
-  final bool hideStatus;
+  final bool? hideStatus;
   const HomePage({this.hideStatus});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final AuthService _auth = AuthService();
   @override
-
-
   Widget build(BuildContext context) {
-    final user = Provider.of<NUser>(context);
+    return Scaffold();
+    /*final user = Provider.of<UserData>(context);
 
     void _showSettingsPanel() {
       showModalBottomSheet(context: context, builder: (context){
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           child: SettingsForm(),
         );
       });
     }
 
     return StreamProvider<List<Habit>>.value(
-      value:DatabaseService().habits,
+      value:OurDatabase(uid: user.uid).habits,
       child: Scaffold(
 
           body: Scaffold(
@@ -49,15 +36,21 @@ class _HomePageState extends State<HomePage> {
               FlatButton.icon(
                 icon: Icon(Icons.settings),
                 label: Text('Add habit'),
-                onPressed: () => _showSettingsPanel(),
-                )
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsForm())),
+                //onPressed: () => _showSettingsPanel(),
+                ),
+              FlatButton.icon(
+                icon: Icon(Icons.settings),
+                label: Text('Update'),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateHabit())),
+              )
               ],
             ),
           body: HabitList(),
         ),
 
     )
-    );
+    );*/
   }
 }
 
@@ -99,3 +92,24 @@ class _HomePageState extends State<HomePage> {
 
 
 
+
+
+/*class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar
+        (
+          title: new Text("Challenges Page")
+      ),
+      body: new Center(
+        child: new Text("This is Challeneges page"),
+      ),
+    );
+  }
+}*/

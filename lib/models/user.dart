@@ -1,15 +1,20 @@
 
-class NUser{
-  final String uid;
-  NUser({this.uid});
-}
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserData
 {
-  final String uid;
-  final String name;
-  final String sugars;
-  final int strength;
+  String? uid;
+  String? email;
+  String? fullName;
+  Timestamp? accountCreated;
 
-  UserData({this.uid, this.name, this.sugars, this.strength});
+
+  UserData(
+      {
+        this.uid,
+        this.email,
+        this.fullName,
+        this.accountCreated
+      });
 }
