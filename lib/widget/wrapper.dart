@@ -13,7 +13,6 @@ import 'package:sherpa_app/services/auth.dart';
 import 'package:sherpa_app/models/user.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-
 class Wrapper extends StatefulWidget {
   final BuildContext? menuScreenContext;
   Wrapper({Key? key, this.menuScreenContext}) : super(key: key);
@@ -33,16 +32,14 @@ class _WrapperState extends State<Wrapper> {
     _hideNavBar = false;
   }
 
-
   List<Widget> _buildScreens() {
-    return
-      [
+    return [
       HomePage(),
       ExplorePage(),
       ProgressPage(),
       ChallengesPage(),
       ProfilePage(),
-      ];
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -50,15 +47,12 @@ class _WrapperState extends State<Wrapper> {
       PersistentBottomNavBarItem(
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
-          routes: {
-
-          },
+          routes: {},
         ),
         icon: Icon(Icons.home),
         title: "Feed",
         activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
-
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.search),
@@ -87,38 +81,29 @@ class _WrapperState extends State<Wrapper> {
     ];
   }
 
-
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     final user = Provider.of<UserData?>(context);
-    if(user==null){
-      return Authenticate();}
-    else {
-      return Scaffold
-        (
+    if (user == null) {
+      return Authenticate();
+    } else {
+      return Scaffold(
         drawer: Drawer(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>
-              [
-
-                TextButton
-                  (child:Text('hey'), onPressed: ()
-                    {
-                      pushNewScreenWithRouteSettings(
-                          context,
-                          settings: RouteSettings(name:'/home'),
+              children: <Widget>[
+                TextButton(
+                    child: Text('hey'),
+                    onPressed: () {
+                      pushNewScreenWithRouteSettings(context,
+                          settings: RouteSettings(name: '/home'),
                           screen: HomePage());
-                    }
-
-                  ),
+                    }),
                 ElevatedButton.icon(
-                  onPressed: () async {await _auth.signOut();},
+                  onPressed: _auth.signOut,
                   icon: Icon(Icons.person),
                   label: Text('Logout'),
-
                 ),
               ],
             ),
@@ -128,13 +113,19 @@ class _WrapperState extends State<Wrapper> {
           elevation: 1,
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.white,
-
           actions: [
-            IconButton(iconSize: 150,icon: Image.asset("assets/SHERPA.png", color: Colors.black,height: 1000,width: 1000,), onPressed: ()
-            {
-             //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
-              //Navigator.of(context).pushReplacementNamed('Profile');
-            }),
+            IconButton(
+                iconSize: 150,
+                icon: Image.asset(
+                  "assets/SHERPA.png",
+                  color: Colors.black,
+                  height: 1000,
+                  width: 1000,
+                ),
+                onPressed: () {
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                  //Navigator.of(context).pushReplacementNamed('Profile');
+                }),
             ButtonTheme(
               minWidth: 200.0,
               height: 100.0,
@@ -145,7 +136,6 @@ class _WrapperState extends State<Wrapper> {
             ),
           ],
         ),
-
         body: PersistentTabView(
           context,
           controller: _controller,
@@ -163,14 +153,13 @@ class _WrapperState extends State<Wrapper> {
           popActionScreens: PopActionScreensType.once,
           bottomScreenMargin: 0.0,
 
-
           selectedTabScreenContext: (context) {
             testContext = context;
           },
           hideNavigationBar: _hideNavBar,
           decoration: NavBarDecoration(
-              colorBehindNavBar: Colors.blue,
-              ),
+            colorBehindNavBar: Colors.blue,
+          ),
           popAllScreensOnTapOfSelectedTab: true,
           itemAnimationProperties: ItemAnimationProperties(
             duration: Duration(milliseconds: 400),
@@ -182,7 +171,7 @@ class _WrapperState extends State<Wrapper> {
             duration: Duration(milliseconds: 200),
           ),
           navBarStyle:
-          NavBarStyle.style6, // Choose the nav bar style with this property
+              NavBarStyle.style6, // Choose the nav bar style with this property
         ),
       );
     }
@@ -190,7 +179,7 @@ class _WrapperState extends State<Wrapper> {
 }
 
 class Profile extends StatefulWidget {
-  Profile({Key? key}): super(key: key);
+  Profile({Key? key}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -201,15 +190,20 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         actions: [
-
-          IconButton(iconSize: 150,icon: Image.asset("assets/SHERPA.png", color: Colors.black,height: 1000,width: 1000,), onPressed: ()
-          {
-            Navigator.pop(context);
-          }),
+          IconButton(
+              iconSize: 150,
+              icon: Image.asset(
+                "assets/SHERPA.png",
+                color: Colors.black,
+                height: 1000,
+                width: 1000,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
           SizedBox(width: 1.0),
-         /* ButtonTheme(
+          /* ButtonTheme(
             minWidth: 100.0,
             height: 100.0,
             child: TextButton(
@@ -222,6 +216,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-
-

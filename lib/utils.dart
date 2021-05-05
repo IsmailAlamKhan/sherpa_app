@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 class Utils {
   static void showSnackBar(BuildContext context, String text) =>
       Scaffold.of(context);
-        //..ScaffoldMessenger.removeCurrentSnackBar()
-       // ..ScaffoldMessenger.showSnackBar(SnackBar(content: Text(text)));
+  //..ScaffoldMessenger.removeCurrentSnackBar()
+  // ..ScaffoldMessenger.showSnackBar(SnackBar(content: Text(text)));
 
   static DateTime? toDateTime(Timestamp? value) {
     if (value == null) return null;
@@ -22,14 +22,15 @@ class Utils {
     return date.toUtc();
   }
 
-  static StreamTransformer transformer<T>(
-          T Function(Map<String, dynamic> json) fromJson) =>
-      StreamTransformer<QuerySnapshot, List<T>>.fromHandlers(
-        handleData: (QuerySnapshot data, EventSink<List<T>> sink) {
-          final snaps = data.docs.map((doc) => doc.data()).toList();
-          final objects = snaps.map((json) => fromJson(json as Map<String, dynamic>)).toList();
+  static StreamTransformer<QuerySnapshot<Map<String, dynamic>>, List<T>>
+      transformer<T>(T Function(Map<String, dynamic> json) fromJson) =>
+          StreamTransformer<QuerySnapshot<Map<String, dynamic>>,
+              List<T>>.fromHandlers(
+            handleData: (data, sink) {
+              final snaps = data.docs.map((doc) => doc.data()).toList();
+              final objects = snaps.map((json) => fromJson(json)).toList();
 
-          sink.add(objects);
-        },
-      );
+              sink.add(objects);
+            },
+          );
 }

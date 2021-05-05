@@ -6,19 +6,21 @@ import 'package:sherpa_app/models/user.dart';
 import 'package:sherpa_app/provider/todos.dart';
 import 'package:sherpa_app/widget/todo_list_widget.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  Stream<List<Todo>>? stream;
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<UserData?>(context);
+    if (stream == null) {
+      stream = FirebaseApi(uid: user?.uid).readTodos();
+    }
 
     final tabs = [
       TodoListWidget(),
@@ -50,20 +52,20 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: StreamBuilder<List<Todo>>(
-        stream: FirebaseApi(uid: user?.uid).readTodos(),
+        stream: stream,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator());
             default:
               if (snapshot.hasError) {
-                return buildText('Something Went Wrong Try later');
+                return buildText(snapshot.error.toString());
               } else {
                 final todos = snapshot.data;
 
-                final provider = Provider.of<TodosProvider?>(context);
-                provider?.setTodos(todos);
-
+                final provider = Provider.of<TodosProvider>(context);
+                provider.setTodos(todos);
+                print(todos);
                 return tabs[selectedIndex];
               }
           }
@@ -74,8 +76,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(20),
         ),
         backgroundColor: Colors.black,
-        onPressed: () {
-        },
+        onPressed: () {},
         child: Icon(Icons.add),
       ),
     );
@@ -85,6 +86,6 @@ class _HomePageState extends State<HomePage> {
 Widget buildText(String text) => Center(
       child: Text(
         text,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: TextStyle(fontSize: 24, color: Colors.black),
       ),
     );

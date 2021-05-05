@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sherpa_app/utils.dart';
 
 class TodoField {
@@ -27,6 +27,14 @@ class Todo {
         id: json['id'],
         isDone: json['isDone'],
       );
+  Todo.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    createdTime = Utils.toDateTime(data['createdTime']);
+    title = data['title'];
+    description = data['description'];
+    id = data['id'];
+    isDone = data['isDone'];
+  }
 
   Map<String, dynamic> toJson() => {
         'createdTime': Utils.fromDateTimeToJson(createdTime),
